@@ -36,13 +36,37 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        $pageTitle = 'Employee Detail';
+
+        // Mendefinisikan pesan yang ditampilkan saat terjadi kesalahan inputan pada form create employee
+        $messages = [
+            'required' => ':attribute harus diisi.',
+            'email' => 'Isi :attribute dengan format yang benar.',
+            'numeric' => 'Isi :attribute dengan angka.'
+        ];
+
+        // Validasi dari inputan menggunakan validator
+        $validator = Validator::make($request->all(), [
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'email' => 'required|email',
+            'age' => 'required|numeric',
+        ], $messages);
+        // Jika validasi terjadi kesalahan maka pesan kesalahan akan muncul
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         // ELOQUENT
-        $employee = Employee::find($id);
+        $employee = New Employee;
+        $employee->firstname = $request->firstName;
+        $employee->lastname = $request->lastName;
+        $employee->email = $request->email;
+        $employee->age = $request->age;
+        $employee->position_id = $request->position;
+        $employee->save();
 
-        // Menampilkan halaman detail karyawan berdasarkan id dengan memebawa nilai pageTitle dan employee
-        return view('employee.show', compact('pageTitle', 'employee'));
+        return redirect()->route('employees.index');
+
     }
 
     /**
