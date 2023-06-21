@@ -42,7 +42,13 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $pageTitle = 'Employee Detail';
+
+        // ELOQUENT
+        $employee = Employee::find($id);
+
+        // Menampilkan halaman detail karyawan berdasarkan id dengan memebawa nilai pageTitle dan employee
+        return view('employee.show', compact('pageTitle', 'employee'));
     }
 
     /**
