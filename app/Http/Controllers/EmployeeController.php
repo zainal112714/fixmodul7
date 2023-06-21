@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Position;
 use App\Models\Employee;
+use Validator;
 
 class EmployeeController extends Controller
 {
